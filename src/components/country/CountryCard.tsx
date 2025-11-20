@@ -14,27 +14,32 @@ const CountryCard: React.FC<CountryCardProps> = ({ country }) => {
         <div
             className="
                 group relative rounded-2xl overflow-hidden
-                shadow-xl bg-white/5 backdrop-blur-sm
+                shadow-xl bg-white/5 dark:bg-gray-800/50 dark:shadow-black/40
+                backdrop-blur-sm
                 transition-all duration-500
                 hover:-translate-y-3 hover:shadow-2xl hover:scale-[1.02]
                 cursor-pointer
             "
         >
             <div className="relative h-72 w-full">
-                <img
-                    src={`${APP_ENV.IMAGE_BASE_URL}large/${country.image}`}
-                    alt={country.name}
-                    className="
-                        h-full w-full object-cover
-                        transition-transform duration-700
-                        group-hover:scale-110
-                    "
-                />
+                {country.image && (
+                    <img
+                        src={`${APP_ENV.IMAGE_BASE_URL}large/${country.image}`}
+                        alt={country.name}
+                        className="
+                            h-full w-full object-cover
+                            transition-transform duration-700
+                            group-hover:scale-110
+                        "
+                    />
+                )}
 
                 <div
                     className="
                         absolute inset-0
-                        bg-gradient-to-b from-black/20 via-black/40 to-black/100
+                        bg-gradient-to-b
+                        from-black/20 via-black/40 to-black/100
+                        dark:from-black/10 dark:via-black/30 dark:to-black/80
                         opacity-70 group-hover:opacity-50
                         transition duration-700
                         group-hover:scale-110
@@ -56,9 +61,12 @@ const CountryCard: React.FC<CountryCardProps> = ({ country }) => {
                 <button
                     className="
                         px-5 py-2.5 rounded-lg text-sm font-semibold
-                        bg-blue-600 text-white shadow-md
+                        bg-blue-600 text-white
+                        dark:bg-blue-500
+                        shadow-md
                         transition-all duration-300
-                        hover:bg-blue-700 hover:shadow-xl
+                        hover:bg-blue-700 dark:hover:bg-blue-600
+                        hover:shadow-xl
                         active:scale-95
                     "
                 >
