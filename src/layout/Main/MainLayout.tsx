@@ -4,13 +4,11 @@ import MainFooter from "./MainFooter.tsx";
 
 export const MainLayout = () => {
     return (
-        <div className={"container"}>
+        <div className={"container mx-auto"}>
             <MainHeader />
 
             <main>
-                <div>
-                    <Outlet />
-                </div>
+                <Outlet />
             </main>
 
             <MainFooter />
