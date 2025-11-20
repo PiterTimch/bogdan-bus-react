@@ -1,6 +1,8 @@
 import {createApi} from "@reduxjs/toolkit/query/react";
 import {createBaseQuery} from "../utils/createBaseQuery";
 import type {ICountryItem} from "../types/location/ICountryItem.ts";
+import type {ICountryCreate} from "../types/location/ICountryCreate.ts";
+import { serialize } from "object-to-formdata";
 
 export const countryService = createApi({
     reducerPath: 'countryService',
@@ -17,9 +19,24 @@ export const countryService = createApi({
             },
             providesTags: ["Countries"]
         }),
+
+        createCountry: builder.mutation<ICountryItem, ICountryCreate>({
+            query: (body) => {
+                const formData = serialize(body, { indices: false });
+
+                return {
+                    url: "",
+                    method: "POST",
+                    body: formData,
+                };
+            },
+            invalidatesTags: ["Countries"]
+        })
+
     }),
 });
 
 export const {
     useGetCountriesQuery,
+    useCreateCountryMutation
 } = countryService;

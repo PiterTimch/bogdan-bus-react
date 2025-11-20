@@ -79,6 +79,22 @@ export const MainHeader = () => {
                                     Register
                                 </Link>
                             </li>
+
+                            <li>
+                                <Link
+                                    to={"/countries/create"}
+                                    className="
+                                        block py-2 px-3
+                                        bg-brand md:bg-transparent
+                                        text-white md:text-fg-brand
+                                        dark:text-blue-400
+                                        rounded md:p-0
+                                        transition
+                                    "
+                                >
+                                    Add country
+                                </Link>
+                            </li>
                         </ul>
                     </div>
                 </div>
