@@ -5,8 +5,16 @@ import NotFoundPage from "./pages/common/NotFoundPage.tsx";
 import UserHomePage from "./pages/user/UserHomePage";
 import RegisterPage from "./pages/account/RegisterPage";
 import CreateCountryPage from "./pages/country/CreateCountryPage";
+import {useEffect} from "react";
+import {useSelector} from "react-redux";
+import type {RootState} from "./store";
 
 function App() {
+    const theme = useSelector((state: RootState) => state.theme.theme);
+
+    useEffect(() => {
+        document.documentElement.classList.toggle("dark", theme === "dark");
+    }, [theme]);
 
   return (
     <>

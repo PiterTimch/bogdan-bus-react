@@ -1,6 +1,12 @@
 import { Link } from "react-router";
+import {useDispatch, useSelector} from "react-redux";
+import type {RootState} from "../../store";
+import {toggleTheme} from "../../slices/themeSlice.tsx";
 
 export const MainHeader = () => {
+    const dispatch = useDispatch();
+    const theme = useSelector((state: RootState) => state.theme.theme);
+
     return (
         <>
             <nav className="
@@ -19,6 +25,13 @@ export const MainHeader = () => {
                             Bogdan-bus
                         </span>
                     </Link>
+
+                    <button
+                        onClick={() => dispatch(toggleTheme())}
+                        className="px-3 py-2 rounded bg-gray-200 dark:bg-gray-700 text-black dark:text-white"
+                    >
+                        {theme === "light" ? "🌙 Dark" : "☀️ Light"}
+                    </button>
 
                     <button
                         data-collapse-toggle="navbar-default"
