@@ -40,7 +40,7 @@ const RegisterPage: React.FC = () => {
             setForm({ name: "", lastName: "", username: "", email: "", password: "" });
             setImage(null);
             setPreview(null);
-        } catch (err) {
+        } catch {
             setError("Не вдалося зареєструватися.");
         }
     };
