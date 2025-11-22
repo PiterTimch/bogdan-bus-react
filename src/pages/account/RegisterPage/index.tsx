@@ -46,18 +46,18 @@ const RegisterPage: React.FC = () => {
     };
 
     return (
-        <div className="p-5 min-h-screen flex items-center justify-center transition-colors">
-            <div className="max-w-[900px] w-full rounded-2xl overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.1)] dark:shadow-black/40 dark:bg-gray-800 bg-white transition-colors">
+        <div className="p-5 min-h-screen flex items-center justify-center">
+            <div className="max-w-[900px] w-full rounded-2xl overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.1)] dark:shadow-gray-800">
                 <div className="grid md:grid-cols-2">
-                    <div className="bg-blue-600 dark:bg-blue-700 p-10 hidden md:flex flex-col justify-center text-white">
+                    <div className="bg-blue-600 p-10 hidden md:flex flex-col justify-center text-white">
                         <h2 className="text-3xl font-semibold mb-4">Ласкаво просимо!</h2>
                         <p className="text-lg">Зареєструйтесь, щоб розпочати.</p>
                     </div>
 
-                    <div className="p-6 md:p-10 flex flex-col justify-center text-gray-900 dark:text-gray-100">
+                    <div className="p-6 md:p-10 flex flex-col justify-center">
                         <div className="text-center mb-6">
                             <h3 className="text-2xl font-semibold mb-1">Реєстрація</h3>
-                            <p className="text-gray-600 dark:text-gray-300">
+                            <p className="">
                                 Введіть свої дані, щоб створити акаунт
                             </p>
                         </div>
@@ -72,7 +72,7 @@ const RegisterPage: React.FC = () => {
                                     value={form.lastName}
                                     onChange={handleChange}
                                     placeholder="Введіть прізвище"
-                                    className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 transition"
+                                    className="w-full px-4 py-2 rounded-lg border focus:ring-2 focus:ring-blue-500 transition"
                                     required
                                 />
                             </div>
@@ -85,7 +85,7 @@ const RegisterPage: React.FC = () => {
                                     value={form.name}
                                     onChange={handleChange}
                                     placeholder="Введіть ім’я"
-                                    className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 transition"
+                                    className="w-full px-4 py-2 rounded-lg border  focus:ring-2 focus:ring-blue-500 transition"
                                     required
                                 />
                             </div>
@@ -98,7 +98,9 @@ const RegisterPage: React.FC = () => {
                                     value={form.username}
                                     onChange={handleChange}
                                     placeholder="Ваш нікнейм"
-                                    className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 transition"
+                                    className="w-full px-4 py-2 rounded-lg border
+                                        focus:ring-2 focus:ring-blue-500
+                                        transition"
                                     required
                                 />
                             </div>
@@ -111,7 +113,9 @@ const RegisterPage: React.FC = () => {
                                     value={form.email}
                                     onChange={handleChange}
                                     placeholder="example@gmail.com"
-                                    className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 transition"
+                                    className="w-full px-4 py-2 rounded-lg border
+                                        focus:ring-2 focus:ring-blue-500
+                                        transition"
                                     required
                                 />
                             </div>
@@ -124,7 +128,7 @@ const RegisterPage: React.FC = () => {
                                     value={form.password}
                                     onChange={handleChange}
                                     placeholder="Введіть пароль"
-                                    className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 transition"
+                                    className="w-full px-4 py-2 rounded-lg border focus:ring-2 focus:ring-blue-500 transition"
                                     required
                                 />
                             </div>
@@ -152,7 +156,7 @@ const RegisterPage: React.FC = () => {
                             <button
                                 type="submit"
                                 disabled={isLoading}
-                                className="w-full bg-blue-600 dark:bg-blue-700 text-white py-3 rounded-lg font-semibold transition hover:bg-blue-700 dark:hover:bg-blue-800 active:scale-95 shadow-md disabled:opacity-50"
+                                className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold transition hover:bg-blue-700 active:scale-95 shadow-md disabled:opacity-50"
                             >
                                 {isLoading ? "Реєстрація..." : "Зареєструватися"}
                             </button>

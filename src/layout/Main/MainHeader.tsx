@@ -1,17 +1,24 @@
 import { Link } from "react-router";
-import {useDispatch, useSelector} from "react-redux";
-import type {RootState} from "../../store";
-import {toggleTheme} from "../../slices/themeSlice.tsx";
+import {type RootState, useAppDispatch, useAppSelector} from "../../store";
+import {setTheme} from "../../slices/themeSlice.tsx";
+import changeTheme from "../../utils/changeTheme.ts";
 
 export const MainHeader = () => {
-    const dispatch = useDispatch();
-    const theme = useSelector((state: RootState) => state.theme.theme);
+
+    const dispatch = useAppDispatch();
+    const theme = useAppSelector((state: RootState) => state.theme.theme);
+
+    changeTheme(theme);
+
+    const handleChangeTheme = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        dispatch(setTheme(e.target.value as any));
+    };
 
     return (
         <>
             <nav className="
-                bg-neutral-primary dark:bg-gray-900
-                w-full border-b border-default dark:border-gray-700
+                bg-neutral-primary
+                w-full border-b border-default
                 transition-colors
             ">
                 <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
@@ -21,29 +28,43 @@ export const MainHeader = () => {
                             className="h-7"
                             alt="Flowbite Logo"
                         />
-                        <span className="self-center text-xl text-heading dark:text-gray-100 font-semibold whitespace-nowrap">
+                        <span className="self-center text-xl text-heading  font-semibold whitespace-nowrap">
                             Bogdan-bus
                         </span>
                     </Link>
 
-                    <button
-                        onClick={() => dispatch(toggleTheme())}
-                        className="px-3 py-2 rounded bg-gray-200 dark:bg-gray-700 text-black dark:text-white"
+                    <select
+                        value={theme}
+                        onChange={handleChangeTheme}
+                        className="
+                        text-slate-700
+                        border-slate-200
+                        px-3 py-1.5 rounded-lg text-sm font-medium
+                        bg-neutral-secondary-soft
+                        border border-neutral-tertiary
+                        focus:outline-none focus:ring-2 focus:ring-blue-500
+                        hover:bg-neutral-secondary
+                        transition
+                      "
                     >
-                        {theme === "light" ? "🌙 Dark" : "☀️ Light"}
-                    </button>
+                        <option value="light">Light</option>
+                        <option value="dark">Dark</option>
+                        <option value="pink">Pink</option>
+                        <option value="ukraine">Ukraine</option>
+                        <option value="dracula">Lavender</option>
+                    </select>
 
                     <button
                         data-collapse-toggle="navbar-default"
                         type="button"
                         className="
                             inline-flex items-center p-2 w-10 h-10 justify-center text-sm
-                            text-body dark:text-gray-300
+                            text-body
                             rounded-base md:hidden
-                            hover:bg-neutral-secondary-soft dark:hover:bg-gray-800
-                            hover:text-heading dark:hover:text-white
+                            hover:bg-neutral-secondary-soft
+                            hover:text-heading
                             focus:outline-none focus:ring-2
-                            focus:ring-neutral-tertiary dark:focus:ring-gray-600
+                            focus:ring-neutral-tertiary
                             transition
                         "
                         aria-controls="navbar-default"
@@ -69,12 +90,12 @@ export const MainHeader = () => {
                     <div className="hidden w-full md:block md:w-auto" id="navbar-default">
                         <ul className="
                             font-medium flex flex-col p-4 md:p-0 mt-4
-                            border border-default dark:border-gray-700
+                            border border-default
                             rounded-base
-                            bg-neutral-secondary-soft dark:bg-gray-800
+                            bg-neutral-secondary-soft
                             md:flex-row md:space-x-8 rtl:space-x-reverse
                             md:mt-0 md:border-0
-                            md:bg-neutral-primary dark:md:bg-gray-900
+                            md:bg-neutral-primary
                             transition-colors
                         ">
                             <li>
@@ -84,7 +105,6 @@ export const MainHeader = () => {
                                         block py-2 px-3
                                         bg-brand md:bg-transparent
                                          md:text-fg-brand
-                                        dark:text-blue-400
                                         rounded md:p-0
                                         transition
                                     "
@@ -100,7 +120,6 @@ export const MainHeader = () => {
                                         block py-2 px-3
                                         bg-brand md:bg-transparent
                                          md:text-fg-brand
-                                        dark:text-blue-400
                                         rounded md:p-0
                                         transition
                                     "

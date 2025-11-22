@@ -4,17 +4,14 @@ import MainFooter from "./MainFooter";
 
 export const MainLayout = () => {
     return (
-        <div className="
-            w-full
-            bg-white dark:bg-gray-950
-            text-black dark:text-gray-100
-            transition-colors min-h-screen
-        ">
+        <div className="w-full bg-[var(--bg)] text-[var(--fg)]">
 
-        <MainHeader />
+            <MainHeader />
 
-            <main className="min-h-[70vh] py-5 transition-colors">
-                <Outlet />
+            <main className="py-5 transition-colors">
+                <div className="container mx-auto">
+                    <Outlet />
+                </div>
             </main>
 
             <MainFooter />
