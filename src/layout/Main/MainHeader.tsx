@@ -83,7 +83,7 @@ export const MainHeader = () => {
                                     className="
                                         block py-2 px-3
                                         bg-brand md:bg-transparent
-                                        text-white md:text-fg-brand
+                                         md:text-fg-brand
                                         dark:text-blue-400
                                         rounded md:p-0
                                         transition
@@ -99,7 +99,7 @@ export const MainHeader = () => {
                                     className="
                                         block py-2 px-3
                                         bg-brand md:bg-transparent
-                                        text-white md:text-fg-brand
+                                         md:text-fg-brand
                                         dark:text-blue-400
                                         rounded md:p-0
                                         transition
