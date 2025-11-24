@@ -12,7 +12,7 @@ export const accountService = createApi({
             query: (body) => {
                 const formData = serialize(body, { indices: false });
                 return {
-                    url: "",
+                    url: "/register",
                     method: "POST",
                     body: formData,
                 };
