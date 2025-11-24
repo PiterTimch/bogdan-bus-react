@@ -118,7 +118,7 @@ const RegisterForm: React.FC = () => {
 
             <BaseButton
                 type="submit"
-                className="w-full rounded-xl !bg-purple-500 dark:!bg-gray-900 text-white font-medium py-2"
+                className="w-full rounded-xl border border-blue-300 font-medium py-2"
             >
                 {isLoading ? "Loading..." : "Register"}
             </BaseButton>

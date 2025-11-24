@@ -23,9 +23,7 @@ const BaseButton: React.FC<BaseButtonProps> = ({
             type={type}
             disabled={disabled}
             onClick={onClick}
-            className={`bg-white text-gray-500 border border-gray-200 hover:bg-gray-100 hover:text-gray-700 
-                       dark:bg-gray-900 dark:text-gray-400 dark:border-gray-800 dark:hover:bg-gray-800 dark:hover:text-white
-                       transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${className}`}
+            className={`transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${className}`}
         >
             {children}
         </button>

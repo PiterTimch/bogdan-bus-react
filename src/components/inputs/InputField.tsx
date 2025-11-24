@@ -35,7 +35,7 @@ const InputField: React.FC<InputFieldProps> = ({
         <div className={`w-full mb-5 ${otherStyles}`}>
             <label
                 htmlFor={name}
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                className="block mb-2 text-sm font-medium"
             >
                 {label}
             </label>
@@ -45,7 +45,7 @@ const InputField: React.FC<InputFieldProps> = ({
                     id={name}
                     name={name}
                     type={isPasswordField && showPassword ? "text" : type}
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 pr-10 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    className="text-sm rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 pr-10"
                     placeholder={placeholder}
                     value={value}
                     onChange={onTextChange}
@@ -55,7 +55,7 @@ const InputField: React.FC<InputFieldProps> = ({
                     <button
                         type="button"
                         onClick={() => setShowPassword((prev) => !prev)}
-                        className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+                        className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 hover:text-gray-700"
                     >
                         {showPassword ? (
                             <svg
