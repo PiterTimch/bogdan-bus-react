@@ -6,6 +6,7 @@ import InputField from "../inputs/InputField.tsx";
 import ImageUploader from "../uploaders/ImagesUploader.tsx";
 import BaseButton from "../inputs/BaseButton.tsx";
 import type { UploadFile } from "antd";
+import {parseServerValidationErrors} from "../../utils/formValidator.ts";
 
 const RegisterForm: React.FC = () => {
     const navigate = useNavigate();
@@ -23,6 +24,7 @@ const RegisterForm: React.FC = () => {
     const [fileList, setFileList] = useState<UploadFile[]>([]);
     const [imageError, setImageError] = useState(false);
     const [formError, setFormError] = useState<string | null>(null);
+    const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -32,6 +34,7 @@ const RegisterForm: React.FC = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setFormError(null);
+        setFieldErrors({});
 
         if (!fileList[0]?.originFileObj) {
             setImageError(true);
@@ -42,7 +45,12 @@ const RegisterForm: React.FC = () => {
             await register({ ...formValues, imageFile: fileList[0].originFileObj }).unwrap();
             navigate("/");
         } catch (err: any) {
-            setFormError(err?.data?.message || "Помилка реєстрації");
+            if (err?.data?.errors) {
+                const { fieldErrors } = parseServerValidationErrors(err.data.errors);
+                setFieldErrors(fieldErrors);
+            } else {
+                setFormError(err?.data?.message || "Помилка реєстрації");
+            }
         }
     };
 
@@ -55,6 +63,7 @@ const RegisterForm: React.FC = () => {
                     placeholder="Pedro"
                     value={formValues.name}
                     onChange={handleChange}
+                    error={fieldErrors.name}
                 />
                 <InputField
                     label="Last name"
@@ -62,6 +71,7 @@ const RegisterForm: React.FC = () => {
                     placeholder="Timchuk"
                     value={formValues.lastName}
                     onChange={handleChange}
+                    error={fieldErrors.lastName}
                 />
             </div>
 
@@ -72,6 +82,7 @@ const RegisterForm: React.FC = () => {
                     placeholder="+380..."
                     value={formValues.phone}
                     onChange={handleChange}
+                    error={fieldErrors.phone}
                 />
                 <InputField
                     label="Email"
@@ -79,6 +90,7 @@ const RegisterForm: React.FC = () => {
                     placeholder="pedro@example.com"
                     value={formValues.email}
                     onChange={handleChange}
+                    error={fieldErrors.email}
                 />
             </div>
 
@@ -89,6 +101,7 @@ const RegisterForm: React.FC = () => {
                 placeholder="********"
                 value={formValues.password}
                 onChange={handleChange}
+                error={fieldErrors.password}
             />
 
             <div className="w-full text-center">

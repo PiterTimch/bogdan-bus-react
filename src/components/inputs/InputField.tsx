@@ -8,7 +8,7 @@ interface InputFieldProps {
     placeholder?: string;
     value?: string;
     onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    onValidationChange?: (isValid: boolean, key: string) => void;
+    error?: string;
 }
 
 const InputField: React.FC<InputFieldProps> = ({
@@ -18,7 +18,8 @@ const InputField: React.FC<InputFieldProps> = ({
                                                    type = "text",
                                                    placeholder,
                                                    value,
-                                                   onChange
+                                                   onChange,
+                                                   error
                                                }) => {
 
     const [showPassword, setShowPassword] = useState(false);
@@ -90,6 +91,7 @@ const InputField: React.FC<InputFieldProps> = ({
                     </button>
                 )}
             </div>
+            {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
         </div>
     );
 };

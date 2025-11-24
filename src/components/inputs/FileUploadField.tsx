@@ -65,7 +65,7 @@ const FileUploadField: React.FC<Props> = ({
 
     return (
         <div className="w-full mb-5">
-            <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+            <label className="block mb-2 text-sm font-medium">
                 {label}
             </label>
 
