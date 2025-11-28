@@ -73,18 +73,11 @@ const CreateCityForm: React.FC = () => {
     };
 
     const countryOptions = countries.map((c: ICountryItem) => ({
-        value: c.id || c.slug,
-        label: (
-            <div className="flex items-center gap-2">
-                <img
-                    src={`${APP_ENV.IMAGE_BASE_URL}large/${c.image}`}
-                    alt={c.name}
-                    className="w-6 h-4 object-cover rounded-sm"
-                />
-                <span>{c.name}</span>
-            </div>
-        ),
+        value: c.id,
+        label: c.name,
+        image: `${APP_ENV.IMAGE_BASE_URL}small/${c.image}`,
     }));
+
 
     return (
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -129,9 +122,9 @@ const CreateCityForm: React.FC = () => {
             <SelectField
                 label="Країна"
                 name="countryId"
-                options={countryOptions.map((c) => ({ value: c.value, label: c.label }))}
+                options={countryOptions}
                 value={formValues.countryId}
-                onChange={handleSelectChange}
+                onChange={(v) => setFormValues((p) => ({ ...p, countryId: Number(v) }))}
             />
 
             <FileUploadField
