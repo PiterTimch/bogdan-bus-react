@@ -9,6 +9,7 @@ import BaseButton from "../inputs/BaseButton.tsx";
 import SelectField from "../inputs/SelectField.tsx";
 import { Editor } from "@tinymce/tinymce-react";
 import type {ICityCreate} from "../../types/location/ICityCreate.ts";
+import {APP_ENV} from "../../env";
 
 const CreateCityForm: React.FC = () => {
     const navigate = useNavigate();
@@ -76,7 +77,7 @@ const CreateCityForm: React.FC = () => {
         label: (
             <div className="flex items-center gap-2">
                 <img
-                    src={`${process.env.REACT_APP_IMAGE_BASE_URL}large/${c.image}`}
+                    src={`${APP_ENV.IMAGE_BASE_URL}large/${c.image}`}
                     alt={c.name}
                     className="w-6 h-4 object-cover rounded-sm"
                 />
@@ -118,7 +119,7 @@ const CreateCityForm: React.FC = () => {
                 <InputField
                     label="Часовий пояс"
                     name="timezone"
-                    placeholder="Europe/Kiev"
+                    placeholder="Belgium"
                     value={formValues.timezone}
                     onChange={handleChange}
                     error={fieldErrors.timezone}
@@ -146,7 +147,7 @@ const CreateCityForm: React.FC = () => {
             <div>
                 <label className="block mb-2 font-medium">Опис міста</label>
                 <Editor
-                    apiKey={process.env.REACT_APP_TINYMCE_KEY}
+                    apiKey={APP_ENV.APP_TINYMCE_KEY}
                     value={formValues.description}
                     init={{
                         height: 300,
