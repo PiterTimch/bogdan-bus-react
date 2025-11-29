@@ -10,11 +10,13 @@ import SelectField from "../inputs/SelectField.tsx";
 import { Editor } from "@tinymce/tinymce-react";
 import type {ICityCreate} from "../../types/location/ICityCreate.ts";
 import {APP_ENV} from "../../env";
+import {useSaveImageMutation} from "../../services/fileService.ts";
 
 const CreateCityForm: React.FC = () => {
     const navigate = useNavigate();
     const [createCity, { isLoading }] = useCreateCityMutation();
     const { data: countries = [] } = useGetCountriesQuery();
+    const [saveImage] = useSaveImageMutation();
 
     const [formValues, setFormValues] = useState<ICityCreate>({
         name: "",
@@ -43,12 +45,12 @@ const CreateCityForm: React.FC = () => {
         }));
     };
 
-    const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        setFormValues((prev) => ({
-            ...prev,
-            countryId: Number(e.target.value),
-        }));
-    };
+    // const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    //     setFormValues((prev) => ({
+    //         ...prev,
+    //         countryId: Number(e.target.value),
+    //     }));
+    // };
 
     const handleDescriptionChange = (content: string) => {
         setFormValues((prev) => ({ ...prev, description: content }));
@@ -147,10 +149,23 @@ const CreateCityForm: React.FC = () => {
                         menubar: false,
                         plugins: ["link image code lists table"],
                         toolbar:
-                            "undo redo | formatselect | bold italic underline | alignleft aligncenter alignright | bullist numlist | link image | code",
+                            "undo redo | formatselect | bold italic underline | " +
+                            "alignleft aligncenter alignright | bullist numlist | link image | code",
+
+                        automatic_uploads: true,
+                        images_file_types: "jpg,jpeg,png,webp",
+
+                        images_upload_handler: async (blobInfo) => {
+                            const file = blobInfo.blob();
+
+                            const response = await saveImage({ imageFile: file }).unwrap();
+
+                            return response;
+                        },
                     }}
                     onEditorChange={handleDescriptionChange}
                 />
+
             </div>
 
             {formError && <p className="text-red-500 text-sm">{formError}</p>}
