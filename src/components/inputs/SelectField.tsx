@@ -43,7 +43,6 @@ const SelectField: React.FC<Props> = ({
             </label>
 
             <div className="relative">
-                {/* Button */}
                 <button
                     type="button"
                     onClick={() => setOpen(!open)}
@@ -83,10 +82,16 @@ const SelectField: React.FC<Props> = ({
                     </svg>
                 </button>
 
-                {/* Dropdown */}
                 {open && (
-                    <div className="absolute w-full border  mt-1 rounded-lg
-                                    shadow-lg max-h-60 overflow-auto z-50 animate-fadeIn">
+                    <div
+                        className="absolute w-full border mt-1 rounded-lg
+                   shadow-lg max-h-60 overflow-auto z-50 animate-fadeIn"
+                        style={{
+                            backgroundColor: "var(--bg)",
+                            color: "var(--fg)",
+                            borderColor: "var(--fg)"
+                        }}
+                    >
                         {options.map((opt) => (
                             <div
                                 key={opt.value}
@@ -94,7 +99,11 @@ const SelectField: React.FC<Props> = ({
                                     onChange?.(opt.value);
                                     setOpen(false);
                                 }}
-                                className="flex items-center gap-2 px-3 py-2 cursor-pointer transition"
+                                className="flex items-center gap-2 px-3 py-2 cursor-pointer transition hover:opacity-80"
+                                style={{
+                                    backgroundColor: "var(--bg)",
+                                    color: "var(--fg)"
+                                }}
                             >
                                 {opt.image && (
                                     <img
@@ -103,7 +112,7 @@ const SelectField: React.FC<Props> = ({
                                         className="w-6 h-4 object-cover rounded-sm"
                                     />
                                 )}
-                                <span className="text-sm ">{opt.label}</span>
+                                <span className="text-sm">{opt.label}</span>
                             </div>
                         ))}
                     </div>

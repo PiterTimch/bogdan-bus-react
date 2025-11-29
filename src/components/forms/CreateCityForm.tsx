@@ -45,13 +45,6 @@ const CreateCityForm: React.FC = () => {
         }));
     };
 
-    // const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    //     setFormValues((prev) => ({
-    //         ...prev,
-    //         countryId: Number(e.target.value),
-    //     }));
-    // };
-
     const handleDescriptionChange = (content: string) => {
         setFormValues((prev) => ({ ...prev, description: content }));
     };
@@ -68,7 +61,7 @@ const CreateCityForm: React.FC = () => {
 
         try {
             await createCity({ ...formValues, image: file }).unwrap();
-            navigate("/cities");
+            navigate("/");
         } catch (err: any) {
             setFormError(err?.data?.message || "Помилка створення міста");
         }
@@ -147,11 +140,15 @@ const CreateCityForm: React.FC = () => {
                     init={{
                         height: 300,
                         menubar: false,
-                        plugins: ["link image code lists table"],
-                        toolbar:
-                            "undo redo | formatselect | bold italic underline | " +
-                            "alignleft aligncenter alignright | bullist numlist | link image | code",
-
+                        plugins: [
+                            'advlist autolink lists link image charmap print preview anchor',
+                            'searchreplace visualblocks code fullscreen',
+                            'insertdatetime media table paste code help wordcount'
+                        ],
+                        toolbar: 'undo redo | formatselect | ' +
+                            'bold italic backcolor | alignleft aligncenter ' +
+                            'alignright alignjustify | bullist numlist outdent indent | ' +
+                            'removeformat | help',
                         automatic_uploads: true,
                         images_file_types: "jpg,jpeg,png,webp",
 
@@ -167,6 +164,52 @@ const CreateCityForm: React.FC = () => {
                 />
 
             </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                <InputField
+                    label="Код головного аеропорту"
+                    name="mainAirportCode"
+                    placeholder="KBP"
+                    value={formValues.mainAirportCode}
+                    onChange={handleChange}
+                    error={fieldErrors.mainAirportCode}
+                />
+
+                <InputField
+                    label="Середня ціна на їжу (€)"
+                    name="avgMealPrice"
+                    placeholder="15"
+                    value={formValues.avgMealPrice?.toString() || ""}
+                    onChange={handleChange}
+                    error={fieldErrors.avgMealPrice}
+                />
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                <InputField
+                    label="Середня ціна готелю (€)"
+                    name="avgHotelPrice"
+                    placeholder="80"
+                    value={formValues.avgHotelPrice?.toString() || ""}
+                    onChange={handleChange}
+                    error={fieldErrors.avgHotelPrice}
+                />
+
+                <div className="flex items-center gap-2 mt-6">
+                    <input
+                        id="hasRecreationalWater"
+                        name="hasRecreationalWater"
+                        type="checkbox"
+                        checked={formValues.hasRecreationalWater}
+                        onChange={handleChange}
+                        className="w-5 h-5"
+                    />
+                    <label htmlFor="hasRecreationalWater" className="font-medium">
+                        Є водойми для відпочинку
+                    </label>
+                </div>
+            </div>
+
 
             {formError && <p className="text-red-500 text-sm">{formError}</p>}
 

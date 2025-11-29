@@ -127,6 +127,21 @@ export const MainHeader = () => {
                                     Add country
                                 </Link>
                             </li>
+
+                            <li>
+                                <Link
+                                    to={"/cities/create"}
+                                    className="
+                                        block py-2 px-3
+                                        bg-brand md:bg-transparent
+                                         md:text-fg-brand
+                                        rounded md:p-0
+                                        transition
+                                    "
+                                >
+                                    Add city
+                                </Link>
+                            </li>
                         </ul>
                     </div>
                 </div>
