@@ -138,26 +138,59 @@ const CreateCityForm: React.FC = () => {
                     apiKey={APP_ENV.APP_TINYMCE_KEY}
                     value={formValues.description}
                     init={{
-                        height: 300,
-                        menubar: false,
+                        height: 450,
+                        // menubar: false,
                         plugins: [
-                            'advlist autolink lists link image charmap print preview anchor',
-                            'searchreplace visualblocks code fullscreen',
-                            'insertdatetime media table paste code help wordcount'
+                            "advlist", "anchor", "autolink", "charmap", "code", "fullscreen",
+                            "help", "image", "insertdatetime", "link", "lists", "media",
+                            "preview", "searchreplace", "table", "visualblocks",
                         ],
-                        toolbar: 'undo redo | formatselect | ' +
-                            'bold italic backcolor | alignleft aligncenter ' +
-                            'alignright alignjustify | bullist numlist outdent indent | ' +
-                            'removeformat | help',
-                        automatic_uploads: true,
+                        toolbar: "undo redo | styles | bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image code",
+                        automatic_uploads: false,
                         images_file_types: "jpg,jpeg,png,webp",
+                        paste_data_images: false,
+
+                        setup: (editor) => {
+                            editor.on("PastePostProcess", async (e: any) => {
+                                if (!e.node) return;
+
+                                // тимчасовий контейнер
+                                const div = document.createElement("div");
+                                div.innerHTML = e.node.innerHTML;
+
+                                const images = div.querySelectorAll("img");
+
+                                for (const img of images) {
+                                    try {
+                                        const oldUrl = img.getAttribute("src");
+                                        if (!oldUrl) continue;
+
+                                        console.log("oldUrl", oldUrl);
+                                        // ---- завантажуємо по URL ----
+                                        // const newUrl = await uploadImageByUrl(oldUrl);
+                                        //
+                                        // // ---- замінюємо src ----
+                                        //img.setAttribute("src", "https://content2.rozetka.com.ua/goods/images/big/415403568.jpg");
+                                    } catch (err) {
+                                        console.error("Image upload failed", err);
+                                    }
+                                }
+
+                                // оновлюємо вміст вставки
+                                e.node.innerHTML = div.innerHTML;
+                            });
+                        },
+
+
 
                         images_upload_handler: async (blobInfo) => {
-                            const file = blobInfo.blob();
 
-                            const response = await saveImage({ imageFile: file }).unwrap();
+                            console.log("Select blobInfo", blobInfo);
+                            //const file = blobInfo.blob();
 
-                            return response;
+                            //const response = await saveImage({ imageFile: file }).unwrap();
+
+                            return "https://content2.rozetka.com.ua/goods/images/big/415403568.jpg";
                         },
                     }}
                     onEditorChange={handleDescriptionChange}
