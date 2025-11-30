@@ -9,7 +9,7 @@ export const fileService = createApi({
     tagTypes: ['Files'],
 
     endpoints: (builder) => ({
-        saveImage: builder.mutation<string, ISaveImageFile>({
+        saveImage: builder.mutation<{url: string}, ISaveImageFile>({
             query: (body) => {
                 const formData = serialize(body);
 
