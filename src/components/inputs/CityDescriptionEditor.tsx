@@ -39,6 +39,9 @@ const CityDescriptionEditor: React.FC<Props> = ({
         const imgs = Array.from(tempDiv.querySelectorAll("img"));
 
         const ids = imgs.map(img => {
+            const dataId = img.getAttribute("data-id");
+            if (dataId) return Number(dataId);
+
             const src = img.getAttribute("src") || "";
             const match = uploadedImagesRef.current.find(x => src.includes(x.imageName));
             return match?.id;
@@ -46,6 +49,7 @@ const CityDescriptionEditor: React.FC<Props> = ({
 
         onDescriptionImageIdsChange(ids);
     };
+
 
     return (
         <Editor
@@ -91,11 +95,13 @@ const CityDescriptionEditor: React.FC<Props> = ({
                         const node = e.element;
 
                         if (node.nodeName !== "IMG") return;
+                        if (node.getAttribute("data-id")) return;
 
                         const src = node.getAttribute("src");
                         if (!src || src.startsWith(APP_ENV.IMAGE_BASE_URL)) return;
 
                         try {
+                            // Завантажуємо зовнішню картинку і відправляємо на сервер
                             const blob = await fetch(src).then((r) => r.blob());
                             const file = new File([blob], "image.png", { type: blob.type });
                             const response = await saveImage({ imageFile: file }).unwrap();
@@ -105,9 +111,18 @@ const CityDescriptionEditor: React.FC<Props> = ({
                                 imageName: response.imageName,
                             });
 
-                            node.setAttribute("src", `${APP_ENV.IMAGE_BASE_URL}large/${response.imageName}`);
+                            // Встановлюємо серверний src і data-id
+                            const serverUrl = `${APP_ENV.IMAGE_BASE_URL}large/${response.imageName}`;
+                            node.setAttribute("src", serverUrl);
+                            node.setAttribute("data-id", String(response.id));
 
-                            syncImageIds(editor.getContent());
+                            // 🔹 Створюємо новий HTML із оновленими src/data-id
+                            const editorBody = editor.getBody();
+                            const updatedHtml = editorBody.innerHTML;
+
+                            // 🔹 Оновлюємо value редактора і форму
+                            onChange(updatedHtml);
+                            syncImageIds(updatedHtml);
 
                         } catch (err) {
                             console.error("Failed to reupload external image", err);
