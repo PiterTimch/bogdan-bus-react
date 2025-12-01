@@ -11,6 +11,7 @@ import { Editor } from "@tinymce/tinymce-react";
 import type {ICityCreate} from "../../types/location/ICityCreate.ts";
 import {APP_ENV} from "../../env";
 import {useSaveImageMutation} from "../../services/fileService.ts";
+import CityDescriptionEditor from "../inputs/CityDescriptionEditor.tsx";
 
 const CreateCityForm: React.FC = () => {
     const navigate = useNavigate();
@@ -30,6 +31,7 @@ const CreateCityForm: React.FC = () => {
         avgMealPrice: undefined,
         avgHotelPrice: undefined,
         hasRecreationalWater: false,
+        descriptionImageIds: []
     });
 
     const [file, setFile] = useState<File | null>(null);
@@ -134,90 +136,12 @@ const CreateCityForm: React.FC = () => {
 
             <div>
                 <label className="block mb-2 font-medium">Опис міста</label>
-                <Editor
-                    apiKey={APP_ENV.APP_TINYMCE_KEY}
-                    value={formValues.description}
-                    init={{
-                        height: 450,
-                        plugins: [
-                            "advlist", "anchor", "autolink", "charmap", "code", "fullscreen",
-                            "help", "image", "insertdatetime", "link", "lists", "media",
-                            "preview", "searchreplace", "table", "visualblocks",
-                        ],
-                        toolbar: "undo redo | styles | bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image code",
-                        automatic_uploads: false,
-                        images_file_types: "jpg,jpeg,png,webp",
-                        paste_data_images: false,
-
-                        setup: (editor) => {
-                            editor.on("Paste", async (e: any) => {
-                                console.log("Paste event triggered");
-
-                                const clipboardData = e.clipboardData || (window as any).clipboardData;
-                                if (!clipboardData) return;
-
-                                const items = clipboardData.items;
-                                if (!items) return;
-
-                                e.preventDefault();
-                                console.log("Default paste blocked");
-
-                                for (const item of items) {
-                                    if (item.type.indexOf("image") !== -1) {
-                                        const file = item.getAsFile();
-                                        if (!file) continue;
-
-                                        console.log("File from clipboard:", file);
-
-                                        try {
-                                            const response = await saveImage({ imageFile: file }).unwrap();
-
-                                            const url = `${APP_ENV.IMAGE_BASE_URL}large/${response.url}`;
-
-                                            editor.insertContent(`<img src="${url}" />`);
-                                        } catch (err) {
-                                            console.error("Image upload failed for clipboard file", err);
-                                        }
-                                    }
-                                }
-
-                                const text = clipboardData.getData("text/html") || clipboardData.getData("text/plain");
-                                console.log("Clipboard HTML/text:", text);
-
-                                const div = document.createElement("div");
-                                div.innerHTML = text;
-
-                                const imgs = div.querySelectorAll("img");
-                                for (const img of imgs) {
-                                    try {
-                                        const oldUrl = img.src;
-
-                                        const blob = await fetch(oldUrl).then(r => r.blob());
-                                        const file = new File([blob], "image.jpg", { type: blob.type });
-
-                                        const response = await saveImage({ imageFile: file }).unwrap();
-
-                                        const newUrl = `${APP_ENV.IMAGE_BASE_URL}large/${response.url}`;
-
-                                        editor.insertContent(`<img src="${newUrl}" />`);
-                                    } catch (err) {
-                                        console.error("Image upload failed for internet image", err);
-                                    }
-                                }
-                            });
-                        },
-
-                        images_upload_handler: async (blobInfo) => {
-
-                            console.log("Select blobInfo", blobInfo);
-                            const file = blobInfo.blob();
-
-                            const response = await saveImage({ imageFile: file }).unwrap();
-
-                            return `${APP_ENV.IMAGE_BASE_URL}large/${response}`;
-                        },
-                    }}
-                    onEditorChange={handleDescriptionChange}
+                <CityDescriptionEditor
+                    value={formValues.description!}
+                    onChange={(content) => setFormValues((p) => ({ ...p, description: content }))}
+                    onDescriptionImageIdsChange={(ids) =>
+                        setFormValues((p) => ({ ...p, descriptionImageIds: ids }))
+                    }
                 />
 
             </div>
