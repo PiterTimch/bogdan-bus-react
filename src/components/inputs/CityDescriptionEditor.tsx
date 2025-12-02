@@ -76,6 +76,7 @@ const CityDescriptionEditor: React.FC<Props> = ({
                 paste_data_images: false,
 
                 setup: (editor) => {
+
                     editor.on("Paste", async (e) => {
                         const items = e.clipboardData?.items;
                         if (!items) return;

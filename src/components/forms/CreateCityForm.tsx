@@ -7,17 +7,14 @@ import InputField from "../inputs/InputField.tsx";
 import FileUploadField from "../inputs/FileUploadField.tsx";
 import BaseButton from "../inputs/BaseButton.tsx";
 import SelectField from "../inputs/SelectField.tsx";
-import { Editor } from "@tinymce/tinymce-react";
 import type {ICityCreate} from "../../types/location/ICityCreate.ts";
 import {APP_ENV} from "../../env";
-import {useSaveImageMutation} from "../../services/fileService.ts";
 import CityDescriptionEditor from "../inputs/CityDescriptionEditor.tsx";
 
 const CreateCityForm: React.FC = () => {
     const navigate = useNavigate();
     const [createCity, { isLoading }] = useCreateCityMutation();
     const { data: countries = [] } = useGetCountriesQuery();
-    const [saveImage] = useSaveImageMutation();
 
     const [formValues, setFormValues] = useState<ICityCreate>({
         name: "",
@@ -45,10 +42,6 @@ const CreateCityForm: React.FC = () => {
             ...prev,
             [name]: type === "checkbox" ? checked : value,
         }));
-    };
-
-    const handleDescriptionChange = (content: string) => {
-        setFormValues((prev) => ({ ...prev, description: content }));
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
