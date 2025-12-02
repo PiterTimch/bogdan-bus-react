@@ -1,5 +1,6 @@
 import { useGetCountriesQuery } from "../../../services/countryService";
 import CountryCard from "../../../components/country/CountryCard.tsx";
+import {Link} from "react-router";
 
 const UserHomePage: React.FC = () => {
     const { data: countries, isLoading } = useGetCountriesQuery();
@@ -24,7 +25,8 @@ const UserHomePage: React.FC = () => {
                     Комфортні поїздки по Україні та Європі
                 </p>
 
-                <button
+                <Link
+                    to="/cities/"
                     className="
                         bg-white text-blue-700
                         dark:bg-gray-700 dark:text-gray-100
@@ -34,8 +36,8 @@ const UserHomePage: React.FC = () => {
                         hover:shadow-2xl active:scale-95
                     "
                 >
-                    Замовити поїздку
-                </button>
+                    Усі міста
+                </Link>
             </section>
 
             <section className="max-w-7xl w-full mx-auto py-16 px-4 transition-colors">
