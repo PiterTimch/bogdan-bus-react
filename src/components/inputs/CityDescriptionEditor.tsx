@@ -1,5 +1,5 @@
 import { Editor } from "@tinymce/tinymce-react";
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import { APP_ENV } from "../../env";
 import { useSaveImageMutation } from "../../services/fileService";
 
@@ -15,10 +15,12 @@ const CityDescriptionEditor: React.FC<Props> = ({
                                                     onDescriptionImageIdsChange,
                                                 }) => {
     const [saveImage] = useSaveImageMutation();
+    //@ts-ignore
     const editorRef = useRef<any>(null);
     const uploadedImagesRef = useRef<{ id: number; imageName: string }[]>([]);
 
     const uploadImage = async (file: Blob) => {
+        //@ts-ignore
         const response = await saveImage({ imageFile: file }).unwrap();
 
         uploadedImagesRef.current.push({
@@ -74,7 +76,7 @@ const CityDescriptionEditor: React.FC<Props> = ({
                 paste_data_images: false,
 
                 setup: (editor) => {
-                    editor.on("Paste", async (e: any) => {
+                    editor.on("Paste", async (e) => {
                         const items = e.clipboardData?.items;
                         if (!items) return;
 
@@ -91,7 +93,7 @@ const CityDescriptionEditor: React.FC<Props> = ({
                         }
                     });
 
-                    editor.on("NodeChange", async (e: any) => {
+                    editor.on("NodeChange", async (e) => {
                         const node = e.element;
 
                         if (node.nodeName !== "IMG") return;
@@ -101,7 +103,6 @@ const CityDescriptionEditor: React.FC<Props> = ({
                         if (!src || src.startsWith(APP_ENV.IMAGE_BASE_URL)) return;
 
                         try {
-                            // Завантажуємо зовнішню картинку і відправляємо на сервер
                             const blob = await fetch(src).then((r) => r.blob());
                             const file = new File([blob], "image.png", { type: blob.type });
                             const response = await saveImage({ imageFile: file }).unwrap();
@@ -111,16 +112,13 @@ const CityDescriptionEditor: React.FC<Props> = ({
                                 imageName: response.imageName,
                             });
 
-                            // Встановлюємо серверний src і data-id
                             const serverUrl = `${APP_ENV.IMAGE_BASE_URL}large/${response.imageName}`;
                             node.setAttribute("src", serverUrl);
                             node.setAttribute("data-id", String(response.id));
 
-                            // 🔹 Створюємо новий HTML із оновленими src/data-id
                             const editorBody = editor.getBody();
                             const updatedHtml = editorBody.innerHTML;
 
-                            // 🔹 Оновлюємо value редактора і форму
                             onChange(updatedHtml);
                             syncImageIds(updatedHtml);
 
