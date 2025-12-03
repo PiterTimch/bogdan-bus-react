@@ -77,19 +77,53 @@ const CityDescriptionEditor: React.FC<Props> = ({
 
                 setup: (editor) => {
 
+                    // editor.on("Paste", async (e) => {
+                    //     const items = e.clipboardData?.items;
+                    //     if (!items) return;
+                    //
+                    //     for (const item of items) {
+                    //         if (item.type.indexOf("image") !== -1) {
+                    //             e.preventDefault();
+                    //             const file = item.getAsFile();
+                    //             if (!file) continue;
+                    //
+                    //             const { url } = await uploadImage(file);
+                    //             editor.insertContent(`<img src="${url}" />`);
+                    //
+                    //         }
+                    //     }
+                    // });
+
                     editor.on("Paste", async (e) => {
                         const items = e.clipboardData?.items;
                         if (!items) return;
+                        e.preventDefault();
 
                         for (const item of items) {
-                            if (item.type.indexOf("image") !== -1) {
-                                e.preventDefault();
-                                const file = item.getAsFile();
-                                if (!file) continue;
+                            console.log("item", item);
+                            if(item.kind !== "file") {
+                                item.getAsString(async (s) => {
+                                    console.log("RAW HTML:", s);
+                                    const temp = document.createElement("div");
+                                    temp.innerHTML = s;
 
-                                const { url } = await uploadImage(file);
-                                editor.insertContent(`<img src="${url}" />`);
+                                    const imgs = temp.querySelectorAll("img");
 
+                                    for (const img of imgs) {
+                                        const src = img.getAttribute("src");
+                                        if (!src || src.startsWith(APP_ENV.IMAGE_BASE_URL)) continue;
+
+                                        console.log("FOUND IMG:", src);
+
+                                        const blob = await fetch(src).then((r) => r.blob());
+                                        const { url } = await uploadImage(blob);
+                                        console.log("UPLOAD RESULT:", url);
+
+                                        img.setAttribute("src", url);
+                                    }
+
+                                    editor.insertContent(temp.innerHTML);
+                                });
                             }
                         }
                     });
@@ -103,19 +137,16 @@ const CityDescriptionEditor: React.FC<Props> = ({
                         const src = node.getAttribute("src");
                         if (!src || src.startsWith(APP_ENV.IMAGE_BASE_URL)) return;
 
+                        console.log("Found external image:", src);
+
                         try {
                             const blob = await fetch(src).then((r) => r.blob());
-                            const file = new File([blob], "image.png", { type: blob.type });
-                            const response = await saveImage({ imageFile: file }).unwrap();
+                            const res = await uploadImage(blob);
 
-                            uploadedImagesRef.current.push({
-                                id: response.id,
-                                imageName: response.imageName,
-                            });
+                            console.log("Uploaded image:", res);
 
-                            const serverUrl = `${APP_ENV.IMAGE_BASE_URL}large/${response.imageName}`;
-                            node.setAttribute("src", serverUrl);
-                            node.setAttribute("data-id", String(response.id));
+                            node.setAttribute("src", res.url);
+                            node.setAttribute("data-id", String(res.id));
 
                             const editorBody = editor.getBody();
                             const updatedHtml = editorBody.innerHTML;
