@@ -81,23 +81,6 @@ const CityDescriptionEditor: React.FC<Props> = ({
 
                 setup: (editor) => {
 
-                    // editor.on("Paste", async (e) => {
-                    //     const items = e.clipboardData?.items;
-                    //     if (!items) return;
-                    //
-                    //     for (const item of items) {
-                    //         if (item.type.indexOf("image") !== -1) {
-                    //             e.preventDefault();
-                    //             const file = item.getAsFile();
-                    //             if (!file) continue;
-                    //
-                    //             const { url } = await uploadImage(file);
-                    //             editor.insertContent(`<img src="${url}" />`);
-                    //
-                    //         }
-                    //     }
-                    // });
-
                     editor.on("Paste", async (e) => {
                         const items = e.clipboardData?.items;
                         if (!items) return;
