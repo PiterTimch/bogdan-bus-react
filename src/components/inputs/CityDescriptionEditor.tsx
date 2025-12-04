@@ -1,7 +1,7 @@
 import { Editor } from "@tinymce/tinymce-react";
 import { useRef } from "react";
 import { APP_ENV } from "../../env";
-import { useSaveImageMutation } from "../../services/fileService";
+import {useSaveImageFromUrlMutation, useSaveImageMutation} from "../../services/fileService";
 
 interface Props {
     value: string;
@@ -15,13 +15,17 @@ const CityDescriptionEditor: React.FC<Props> = ({
                                                     onDescriptionImageIdsChange,
                                                 }) => {
     const [saveImage] = useSaveImageMutation();
+    const [saveImageFromUrl] = useSaveImageFromUrlMutation();
     //@ts-ignore
     const editorRef = useRef<any>(null);
     const uploadedImagesRef = useRef<{ id: number; imageName: string }[]>([]);
 
-    const uploadImage = async (file: Blob) => {
-        //@ts-ignore
-        const response = await saveImage({ imageFile: file }).unwrap();
+    const uploadImage = async (data: Blob | string) => {
+        const response = await (
+            typeof data === "string"
+                ? saveImageFromUrl(data)
+                : saveImage({ imageFile: data as File })
+        ).unwrap();
 
         uploadedImagesRef.current.push({
             id: response.id,
@@ -115,9 +119,7 @@ const CityDescriptionEditor: React.FC<Props> = ({
 
                                         console.log("FOUND IMG:", src);
 
-                                        const blob = await fetch(src).then((r) => r.blob());
-                                        const { url } = await uploadImage(blob);
-                                        console.log("UPLOAD RESULT:", url);
+                                        const { url } = await uploadImage(src);
 
                                         img.setAttribute("src", url);
                                     }
@@ -140,8 +142,7 @@ const CityDescriptionEditor: React.FC<Props> = ({
                         console.log("Found external image:", src);
 
                         try {
-                            const blob = await fetch(src).then((r) => r.blob());
-                            const res = await uploadImage(blob);
+                            const res = await uploadImage(src);
 
                             console.log("Uploaded image:", res);
 
