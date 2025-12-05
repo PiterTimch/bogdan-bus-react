@@ -15,7 +15,6 @@ interface Props {
 }
 
 const SelectField: React.FC<Props> = ({
-                                          name,
                                           label,
                                           options,
                                           value,

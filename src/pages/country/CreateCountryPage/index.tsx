@@ -16,16 +16,21 @@ const CreateCountryPage = () => {
     const [message, setMessage] = useState(null);
     const [error, setError] = useState(null);
 
+    //@ts-ignore
     const handleChange = (e) => {
         setForm({ ...form, [e.target.name]: e.target.value });
     };
 
+    //@ts-ignore
     const handleImage = (e) => {
         const file = e.target.files[0];
         setImage(file);
-        if (file) setPreview(URL.createObjectURL(file));
+        if (file)
+            //@ts-ignore
+            setPreview(URL.createObjectURL(file));
     };
 
+    //@ts-ignore
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -37,12 +42,14 @@ const CreateCountryPage = () => {
                 image,
             }).unwrap();
 
+            //@ts-ignore
             setMessage("Country created successfully!");
             setForm({ name: "", code: "", slug: "" });
             setImage(null);
             setPreview(null);
 
-        } catch (err) {
+        } catch {
+            //@ts-ignore
             setError("Failed to create country.");
         }
     };

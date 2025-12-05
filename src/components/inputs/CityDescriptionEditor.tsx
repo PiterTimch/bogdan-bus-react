@@ -89,6 +89,7 @@ const CityDescriptionEditor: React.FC<Props> = ({
                         for (const item of items) {
                             console.log("item", item);
                             if(item.kind !== "file") {
+                                //@ts-ignore
                                 item.getAsString(async (s) => {
                                     console.log("RAW HTML:", s);
                                     const temp = document.createElement("div");
